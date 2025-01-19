@@ -66,9 +66,12 @@ oc describe KafkaConnector my-mysql-source-connector
 echo "Press [Enter] key to continue"
 read
 
-echo "Check the topic content for our AccountDB ... "
+echo "Check the topic content for our AccountDB before additional data ... "
+echo "Press [Control+C] key to continue after view the content of the topic"
+read
 oc exec -n dev  -it my-cluster-kafka-0  -- /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092  --from-beginning --property print.key=true --topic=accountdb-connector-mysql.accountdb.account
-echo "Insert a new rows"
+
+echo "Insert new rows ... "
 oc exec $POD_NAME -- mysql -u root accountdb -e "insert into accountdb.account (id, firstname, lastname, status) values (3,'Osa3','Ora3',1);"
 oc exec $POD_NAME -- mysql -u root accountdb -e "insert into accountdb.account (id, firstname, lastname, status) values (4,'Osa4','Ora4',1);"
 
@@ -78,10 +81,10 @@ oc exec $POD_NAME -- mysql -u root accountdb -e "UPDATE accountdb.account SET la
 # Check DB content
 oc exec $POD_NAME -- mysql -u root accountdb -e "select * from accountdb.account" 
 
-echo "Press [Enter] key to continue"
+echo "Check the topic content for our AccountDB After additional data ... "
+echo "Press [Control+C] key to continue after view the content of the topic"
 read
 
-echo "Check the topic content for our AccountDB ... "
 oc exec -n dev  -it my-cluster-kafka-0  -- /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092  --from-beginning --property print.key=true --topic=accountdb-connector-mysql.accountdb.account
 
 echo "Congratulations, we are done!"
