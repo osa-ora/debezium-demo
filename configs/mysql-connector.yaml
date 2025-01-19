@@ -1,0 +1,20 @@
+kind: KafkaConnector
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: my-mysql-source-connector
+  labels:
+    strimzi.io/cluster: my-connect-cluster
+  namespace: dev
+spec:
+  class: io.debezium.connector.mysql.MySqlConnector 
+  tasksMax: 1  
+  config:  
+    schema.history.internal.kafka.bootstrap.servers: my-cluster-kafka-bootstrap:9092
+    schema.history.internal.kafka.topic: schema-changes.accountdb
+    database.hostname: mysql.dev.svc.cluster.local
+    database.port: 3306   
+    database.user: root  
+    database.password: root123  
+    database.server.id: 184054 
+    topic.prefix: accountdb-connector-mysql 
+    table.include.list: accountdb.*  
