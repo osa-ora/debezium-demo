@@ -3,7 +3,7 @@
 ![image](https://github.com/user-attachments/assets/81ec5827-eb25-452b-889d-df33ed4923f7)
 
 Change data capture, or CDC, is a well-established software design pattern for a system that monitors and captures the changes in data so that other software can respond to those changes. CDC captures row-level changes to database tables and passes corresponding change events to a data streaming bus. Applications can read these change event streams and access these change events in the order in which they occurred.
-It supports the following Databases: Db2, MongoDB, MySQL, Oracle, PostgreSQL and MS SQL Server.
+It supports the following Databases: Db2, MongoDB, MySQL, Oracle, PostgreSQL and MS SQL Server, etc.. (check the repository: https://maven.repository.redhat.com/ga/io/debezium/ )
 
 This basic demo demonstrate how to use Red Hat Build of Debezium to connect to MySQL DB and Stream the changes from this DB into Kafka topic.
 
