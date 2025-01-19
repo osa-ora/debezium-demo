@@ -54,7 +54,7 @@ echo "Press [Enter] key to setup the MySQL Debezium Connector once the Connector
 read
 
 # Provision AMQ address object details
-#oc apply -f https://raw.githubusercontent.com/osa-ora/debezium-demo/refs/heads/main/configs/mysql-connector.yaml -n dev
+oc apply -f https://raw.githubusercontent.com/osa-ora/debezium-demo/refs/heads/main/configs/mysql-connector.yaml -n dev
 
 
 echo "Press [Enter] key to do some testing once the mysql connector deployed successfully and ready ..." 
@@ -63,6 +63,9 @@ read
 # Group all resourcs
 echo "Check the topics are created ... "
 oc describe KafkaConnector my-mysql-source-connector
+echo "Press [Enter] key to continue"
+read
+
 echo "Check the topic content for our AccountDB ... "
 oc exec -n dev  -it my-cluster-kafka-0  -- /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092  --from-beginning --property print.key=true --topic=accountdb-connector-mysql.accountdb.account
 echo "Insert a new rows"
@@ -71,6 +74,12 @@ oc exec $POD_NAME -- mysql -u root accountdb -e "insert into accountdb.account (
 
 echo "Update an old row"
 oc exec $POD_NAME -- mysql -u root accountdb -e "UPDATE accountdb.account SET lastname = 'Oransa2' WHERE id = 2;"
+
+# Check DB content
+oc exec $POD_NAME -- mysql -u root accountdb -e "select * from accountdb.account" 
+
+echo "Press [Enter] key to continue"
+read
 
 echo "Check the topic content for our AccountDB ... "
 oc exec -n dev  -it my-cluster-kafka-0  -- /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092  --from-beginning --property print.key=true --topic=accountdb-connector-mysql.accountdb.account
